@@ -57,32 +57,6 @@ NutriScan AI is a modern Android application that scans food product nutrition l
 | 40–69% | Moderate | 🟡 Yellow |
 | 0–39% | Dangerous | 🔴 Red |
 
----
-
-## 📂 Project Structure
-
-com.amati.nutriscanai
-│
-├── data
-│ ├── model
-│ ├── repository
-│ ├── ocr
-│ └── ai
-│
-├── domain
-│ ├── model
-│ └── usecase
-│
-├── ui
-│ ├── home
-│ ├── camera
-│ ├── result
-│ └── theme
-│
-├── navigation
-├── di
-└── MainActivity.kt
-
 
 ---
 
