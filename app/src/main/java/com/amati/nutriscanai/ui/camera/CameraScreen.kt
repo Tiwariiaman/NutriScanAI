@@ -1,8 +1,12 @@
 package com.amati.nutriscanai.ui.camera
 
 import android.Manifest
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -80,8 +84,25 @@ fun CameraScreen(
                     .align(Alignment.BottomCenter)
                     .padding(24.dp),
                 onClick = {
-                    onImageCaptured()
+                    val imageCapture = imageCapture ?: return@FloatingActionButton
+
+                    imageCapture.takePicture(
+                        ContextCompat.getMainExecutor(context),
+                        object : ImageCapture.OnImageCapturedCallback() {
+                            override fun onCaptureSuccess(image: ImageProxy) {
+                                val bitmap = imageProxyToBitmap(image)
+                                image.close()
+                                viewModel.onImageCaptured(bitmap)
+                                onImageCaptured()
+                            }
+
+                            override fun onError(exception: ImageCaptureException) {
+                                exception.printStackTrace()
+                            }
+                        }
+                    )
                 }
+
             ) {
                 Icon(Icons.Default.Camera, contentDescription = "Capture")
             }
@@ -95,4 +116,11 @@ fun CameraScreen(
             Text("Camera permission required")
         }
     }
+}
+
+fun imageProxyToBitmap(image: ImageProxy): Bitmap {
+    val buffer = image.planes[0].buffer
+    val bytes = ByteArray(buffer.remaining())
+    buffer.get(bytes)
+    return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 }

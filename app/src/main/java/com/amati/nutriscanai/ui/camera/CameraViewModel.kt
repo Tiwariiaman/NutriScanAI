@@ -1,5 +1,6 @@
 package com.amati.nutriscanai.ui.camera
 
+import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -8,13 +9,13 @@ class CameraViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(CameraUiState())
     val uiState = _uiState.asStateFlow()
 
-    fun onImageCaptured() {
-        _uiState.value = _uiState.value.copy(isImageCaptured = true)
+    fun onImageCaptured(bitmap: Bitmap) {
+        _uiState.value = CameraUiState(capturedBitmap = bitmap)
     }
 
 }
 
 data class  CameraUiState(
-    val isImageCaptured: Boolean = false
+    val capturedBitmap: Bitmap? = null
 
 )
