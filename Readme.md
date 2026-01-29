@@ -5,10 +5,9 @@ NutriScan AI is a modern Android application that scans food product nutrition l
 ---
 
  <p align="center">
-  <img src="post5.2.jpeg" width="200"/>
-  <img src="post5.3.jpeg" width="200"/>
-    <img src="post7.2.jpeg" width="200"/>
-  <img src="post7.3.jpeg" width="200"/>
+  <img src="post9.1.jpeg" width="200"/>
+  <img src="post9.jpeg" width="200"/>
+
 </p
 
 ## 🚀 Features
