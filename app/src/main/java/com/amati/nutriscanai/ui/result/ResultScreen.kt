@@ -10,7 +10,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.amati.nutriscanai.data.model.RiskLevel
+import com.amati.nutriscanai.domain.usecase.AnalyzeHealthUseCase
 import com.amati.nutriscanai.domain.usecase.ParseNutritionUseCase
 
 @Composable
@@ -21,20 +26,48 @@ fun ResultScreen(
         ParseNutritionUseCase().execute(extractedText)
     }
 
+    val healthResult = remember {
+        AnalyzeHealthUseCase().execute(nutrition)
+    }
+
+    val color = when (healthResult.riskLevel) {
+        RiskLevel.SAFE -> Color(0xFF2ECC71)
+        RiskLevel.MODERATE -> Color(0xFFF1C40F)
+        RiskLevel.DANGEROUS -> Color(0xFFE74C3C)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(20.dp)
     ) {
 
-        Text("Nutrition Summary", style = MaterialTheme.typography.titleLarge)
+        Text(
+            text = "Health Score",
+            style = MaterialTheme.typography.titleLarge
+        )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
-        Text("Energy: ${nutrition.energyKcal ?: "--"} kcal")
-        Text("Sugar: ${nutrition.sugarG ?: "--"} g")
-        Text("Fat: ${nutrition.fatG ?: "--"} g")
-        Text("Protein: ${nutrition.proteinG ?: "--"} g")
-        Text("Sodium: ${nutrition.sodiumMg ?: "--"} mg")
+        Text(
+            text = "${healthResult.scorePercentage}%",
+            fontSize = 48.sp,
+            fontWeight = FontWeight.Bold,
+            color = color
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text(
+            text = "Health Impact",
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        healthResult.impactPoints.forEach {
+            Text("• $it")
+            Spacer(modifier = Modifier.height(6.dp))
+        }
     }
 }

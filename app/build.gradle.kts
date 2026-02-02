@@ -68,6 +68,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-permissions:0.34.0")
 
     implementation("com.google.dagger:hilt-android:2.50")
+    implementation(libs.androidx.ui.graphics)
     kapt("com.google.dagger:hilt-compiler:2.50")
 
 
